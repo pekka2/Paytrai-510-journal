@@ -1,0 +1,53 @@
+<div style="margin-top:15px" id="paytrail-information"></div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+ 
+	        var payment_method =  $("input[type=radio][name='payment_method']:checked").val();
+          var postcode = '{{ postcode }}';
+
+          if(postcode && payment_method){
+
+           $.ajax({
+               url: "index.php?route=payment/paytrail_510_journal/paytrail",
+               data: 'method=' + payment_method,
+               dataType: 'json',
+               type: 'get',
+               success: function(data) {
+                  
+             // if( $('#privacy').is(':checked') && $('#agree').is(':checked') ){
+
+                 if(data.url){
+
+                     var html ='';
+
+                     var parameters = data.parameters;
+
+                     $("#paytrail-form").attr("action", data.url);
+
+                     for(var i = 0; i< parameters.length; i++){
+
+                        html += '<input type="hidden" name="' + parameters[i].name + '" value="' + parameters[i].value + '"/>';
+
+                     }
+                     
+                      $('#paytrail-form').html(html);
+
+                      $("#quick-checkout-button-confirm").attr("form", "paytrail-form");
+
+                     $('#paytrail-information').html("{{ text_success }}");
+                      $("#quick-checkout-button-confirm span").html("{{ button_pay }}");
+                 }
+
+                  if(data.search('error')){
+                    $('#paytrail-information').html(data);
+                  } 
+
+                 // }
+                 
+               }
+            });
+         }
+
+    });
+</script>
