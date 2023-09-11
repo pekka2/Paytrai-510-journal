@@ -1,0 +1,51 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+<version><![CDATA[1.2]]></version>
+<author><![CDATA[peku]]></author>
+<name>Paytrail 510 ja Journal</name>
+<code>34511098321hfs</code>
+<file path="system/library/url.php">
+<operation>
+<search><![CDATA[$secure = false]]></search>
+<add position="replace"><![CDATA[$secure = true]]></add>
+</operation>
+</file>
+<file path="admin/controller/extension/extension/payment.php">
+<operation>      
+<search><![CDATA[if (!is_file(DIR_APPLICATION . 'controller/extension/payment/' . $value . '.php') && !is_file(DIR_APPLICATION . 'controller/payment/' . $value . '.php')) {]]></search>
+<add position="replace" offset="2"><![CDATA[if (!is_file(DIR_APPLICATION . 'controller/extension/payment/' . $value . '.php') && !is_file(DIR_APPLICATION . 'controller/payment/' . $value . '.php')) {
+	              // $this->model_setting_extension->uninstall('payment', $value);]]></add>
+</operation>
+</file>
+<file path="catalog/controller/journal3/checkout.php">
+<operation>
+<search><![CDATA[$data['header'] = $this->load->controller('common/header');]]></search>
+<add position="after"><![CDATA[
+	    $this->load->language('extension/payment/paytrail_510_journal');
+
+	    $data['button_pay'] = $this->language->get('button_pay');]]></add>
+</operation>
+</file>
+<file path="catalog/view/theme/journal3/template/journal3/checkout/confirm.twig">
+<operation>
+<search><![CDATA[<div class="buttons confirm-buttons">]]></search>
+<add position="replace" offset="3"><![CDATA[<div class="buttons confirm-buttons">
+      <div id="paytrail">
+      	<form id="paytrail-form" method="post">
+      	</form>
+     </div>
+      <div class="pull-right">
+           <button type="submit" v-on:click="save(true)" class="btn btn-primary" id="quick-checkout-button-confirm" data-loading-text="<span>{{ button_pay }}</span>"><span>{{ j3.settings.get('confirmOrderLanguage') }}</span></button>
+      </div>]]></add>
+</operation>
+<operation>
+<search><![CDATA[<label><input v-model="privacy" type="checkbox"/>{{ privacy }}</label>]]></search>
+<add position="replace"><![CDATA[<label><input v-model="privacy" type="checkbox" id="privacy"/>{{ privacy }}</label>]]></add>
+</operation>
+<operation>
+<search><![CDATA[<label><input v-model="agree" type="checkbox"/>{{ agree }}</label>]]></search>
+<add position="replace"><![CDATA[<label><input v-model="agree" type="checkbox" id="agree"/>{{ agree }}</label>]]></add>
+</operation>
+</file>
+</modification>
