@@ -1,0 +1,620 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="paytrail" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ clear }}" data-toggle="tooltip" title="{{ button_clear }}" class="btn btn-danger"><i class="fa fa-eraser"></i></a>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+       {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+   {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="paytrail" class="form-horizontal">
+          <div class="tab-content">
+
+                <div class="col-sm-2">
+                  <ul class="nav nav-pills nav-stacked" id="payment">
+                    <li class="active"><a href="#tab-payment" data-toggle="tab">{{ entry_general }}</a></li>
+                    <li><a href="#tab-osuuspankki" data-toggle="tab"><i onclick="$('#payment a:first').tab('show');"></i>{{ entry_osuuspankki }}</a></li>
+                    <li><a href="#tab-nordea" data-toggle="tab"><i onclick="$('#payment a:first').tab('show');"></i>{{ entry_nordea }}</a></li>
+                    <li><a href="#tab-danskebank" data-toggle="tab"><i onclick="$('#payment a:first').tab('show');"></i>{{ entry_danskebank }}</a></li>
+                    <li><a href="#tab-saastopankki" data-toggle="tab"><i onclick="$('#payment a:first').tab('show');"></i>{{ entry_saastopankki }}</a></li>
+                    
+                    {% if payment_spankki_status == 0 %}
+                      {% set spankki = 'style="color:red"' %}
+                    {% else %}
+                      {% set spankki = '' %}
+                    {% endif %}
+                    <li><a {{ spankki }} href="#tab-spankki" data-toggle="tab"><i onclick="$('#payment a:first').tab('show');"></i>{{ entry_spankki }}</a></li>
+
+                    {% if payment_omasp_status == 0 %}
+                      {% set omasp = 'style="color:red"' %}
+                    {% else %}
+                      {% set omasp = '' %}
+                    {% endif %}
+                    <li><a {{ visa }} href="#tab-omasp" data-toggle="tab"><i onclick="$('#payment a:first').tab('show');"></i>{{ entry_omasp }}</a></li>
+
+                    {% if payment_visa_status == 0 %}
+                      {% set aktia = 'style="color:red"' %}
+                    {% else %}
+                      {% set aktia = '' %}
+                    {% endif %}
+                    <li><a {{ aktis }} href="#tab-aktia" data-toggle="tab"><i onclick="$('#payment a:first').tab('show')"></i>{{ entry_aktia }}</a></li>
+
+                    {% if payment_pivo_status == 0 %}
+                      {% set pivo = 'style="color:red"' %}
+                    {% else %}
+                      {% set pivo = '' %}
+                    {% endif %}
+                    <li><a {{ pivo }} href="#tab-pivo" data-toggle="tab"><i onclick="$('#payment a:first').tab('show')"></i>{{ entry_pivo }}</a></li>
+
+                    {% if payment_pop_status == 0 %}
+                      {% set pop = 'style="color:red"' %}
+                    {% else %}
+                      {% set pop = '' %}
+                    {% endif %}
+                    <li><a {{ pop }} href="#tab-pop_pankki" data-toggle="tab"><i onclick="$('#payment a:first').tab('show')"></i>{{ entry_pop_pankki }}</a></li>
+                    
+                    {% if payment_visa_status == 0 %}
+                      {% set visa = 'style="color:red"' %}
+                    {% else %}
+                      {% set visa = '' %}
+                    {% endif %}
+                    <li><a {{ visa }} href="#tab-visa" data-toggle="tab"><i onclick="$('#payment a:first').tab('show')"></i>{{ entry_visa }}</a></li>
+
+                    {% if payment_visa_electron_status == 0 %}
+                      {% set visa_electron = 'style="color:red"' %}
+                    {% else %}
+                      {% set visa_electron = '' %}
+                    {% endif %}
+                    <li><a {{ visa_electron }} href="#tab-visa_electron" data-toggle="tab"><i onclick="$('#payment a:first').tab('show')"></i>{{ entry_visa_electron }}</a></li>
+
+                    {% if payment_mastercard_status == 0 %}
+                      {% set mastercard = 'style="color:red"' %}
+                    {% else %}
+                      {% set mastercard = '' %}
+                    {% endif %}
+                    <li><a  {{ mastercard }} href="#tab-mastercard" data-toggle="tab"><i onclick="$('#payment a:first').tab('show')"></i>{{ entry_mastercard }}</a></li>
+
+                    {% if payment_collectorb2c_status == 0 %}
+                      {% set collectorb2c = 'style="color:red"' %}
+                    {% else %}
+                      {% set collectorb2c = '' %}
+                    {% endif %}
+                    <li><a  {{ collectorb2c }} href="#tab-walley" data-toggle="tab"><i onclick="$('#payment a:first').tab('show')"></i>{{ entry_walley }}</a></li>
+
+                    {% if payment_collectorb2b_status == 0 %}
+                      {% set collectorb2b = 'style="color:red"' %}
+                    {% else %}
+                      {% set collectorb2b = '' %}
+                    {% endif %}
+                    <li><a  {{ collectorb2b }} href="#tab-walley_yrityslasku" data-toggle="tab"><i onclick="$('#payment a:first').tab('show')"></i>{{ entry_walley_yrityslasku }}</a></li>
+
+                  </ul>
+                </div>
+                <div class="col-sm-10">
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="tab-payment">
+                      <fieldset>
+
+            <div class="tab-pane active" id="tab-general">
+              <div class="form-group required">
+                <label class="col-sm-2 control-label" for="input-merchant"><span data-toggle="tooltip" title="{{ help_merchant }}">{{ entry_merchant }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="payment_paytrail_510_journal_merchant" value="{{ payment_paytrail_510_journal_merchant }}" placeholder="{{ placeholder_merchant }}" id="input-merchant" class="form-control" />
+                  {% if error_merchant %}
+                  <div class="text-danger">{{ error_merchant }}</div>
+                 {% endif %}
+                </div>
+              </div>
+              <div class="form-group required">
+                <label class="col-sm-2 control-label" for="input-security"><span data-toggle="tooltip" title="{{ help_security }}">{{ entry_security }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="payment_paytrail_510_journal_security" value="{{ payment_paytrail_510_journal_security }}" placeholder="{{ placeholder_security }}" id="input-security" class="form-control" />
+                  {% if error_security %}
+                  <div class="text-danger">{{ error_security }}</div>
+                 {% endif %}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="select-order_status"><span data-toggle="tooltip" title="{{ help_order_status }}">{{ entry_order_status }}</span></label>
+                <div class="col-sm-10">
+                  <select name="payment_paytrail_510_journal_order_status_id" id="select-order_status" class="form-control">
+              {% for order_status in order_statuses %}
+                 {% if order_status.order_status_id == payment_paytrail_510_journal_order_status_id %}
+                   <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                {% else %}
+                   <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                {% endif %}
+             {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="select-order_cancel-status"><span data-toggle="tooltip" title="{{ help_cancel_status }}">{{ entry_order_cancel_status }}</span></label>
+                <div class="col-sm-10">
+                  <select name="payment_paytrail_510_journal_order_cancel_status_id" id="select-order_cancel-status" class="form-control">
+              {% for order_status in order_statuses %}
+                 {% if order_status.order_status_id == payment_paytrail_510_journal_order_cancel_status_id %}
+                   <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                {% else %}
+                   <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                {% endif %}
+             {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="select-geo_zone_id"><span data-toggle="tooltip" title="{{ help_geo_zone }}">{{ entry_geo_zone }}</span></label>
+                <div class="col-sm-10">
+                  <select name="payment_paytrail_510_journal_geo_zone_id" id="select-geo_zone_id" class="form-control">
+              <option value="0">{{ text_all_zones }}</option>
+              {% for geo_zone in geo_zones %}
+                  {% if geo_zone.geo_zone_id == payment_paytrail_510_journal_geo_zone_id %}
+                    <option value="{{ geo_zone.geo_zone_id }}" selected="selected">{{ geo_zone.name }}</option>
+                  {% else %}
+                    <option value="{{ geo_zone.geo_zone_id }}">{{ geo_zone.name }}</option>
+                 {% endif %}
+             {% endfor %}
+                  </select>
+                </div>
+              </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="paytrail_510_status" id="input-status" class="form-control">
+                {% if paytrail_510_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status"><span data-toggle="tooltip" title="{{ help_sandbox }}">{{ entry_sandbox }}</span></label>
+            <div class="col-sm-10">
+              <select name="payment_paytrail_510_journal_sandbox" id="input-status" class="form-control">
+                {% if payment_paytrail_510_journal_sandbox %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="select-geo_zone_id">{{ entry_store }}</label>
+                <div class="col-sm-10">
+                  <select name="payment_paytrail_510_journal_store_id" id="select-store" class="form-control">
+              {% for store in stores %}
+                  {% if store.store_id == payment_paytrail_510_journal_store_id %}
+                    <option value="{{ store.store_id }}" selected="selected">{{ store.name }}</option>
+                  {% else %}
+                    <option value="{{ store.store_id }}">{{ store.name }}</option>
+                 {% endif %}
+             {% endfor %}
+                  </select>
+                </div>
+              </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order"><span data-toggle="tooltip" title="{{ help_log }}">{{ entry_log }}</span></label>
+      <div class="col-sm-10">
+       <textarea class="form-control" rows="10">{{ log }}</textarea>
+     </div>
+   </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order"><span data-toggle="tooltip" title="{{ help_failed_log }}">{{ entry_failed_log }}</span></label>
+      <div class="col-sm-10">
+       <textarea class="form-control" rows="10">{{ failed_log }}</textarea>
+     </div>
+   </div>
+   </div>
+
+
+ </div>
+
+
+   <!-- Pankit -->
+   
+        <div class="tab-pane" id="tab-aktia">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-aktia">{{ entry_aktia }}</label>
+            <div class="col-sm-10">
+              <select name="payment_aktia_status" id="input-aktia" class="form-control">
+                {% if payment_aktia_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_aktia_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_aktia_sort_order" value="{{ payment_aktia_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+       </div>
+
+        <div class="tab-pane" id="tab-alandsbanken">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-alands">{{ entry_alandsbanken }}</label>
+            <div class="col-sm-10">
+              <select name="payment_alandsbanken_status" id="input-alands" class="form-control">
+                {% if payment_alandsbanken_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_alandsbanken_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_alandsbanken_sort_order" value="{{ payment_alandsbanken_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+       </div>
+
+        <div class="tab-pane" id="tab-danskebank">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-danske">{{ entry_danskebank }}</label>
+            <div class="col-sm-10">
+              <select name="payment_danske_status" id="input-danske" class="form-control">
+                {% if payment_danske_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_danskebank_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_danske_sort_order" value="{{ payment_danske_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+       </div>
+
+        <div class="tab-pane" id="tab-handelsbank">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-handels">{{ entry_handelsbank }}</label>
+            <div class="col-sm-10">
+              <select name="payment_handelsbank_status" id="input-handels" class="form-control">
+                {% if payment_handels_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_handelsbank_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_handelsbank_sort_order" value="{{ payment_handelsbank_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+       </div>
+
+       <div class="tab-pane" id="tab-mastercard">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-master">{{ entry_mastercard }}</label>
+            <div class="col-sm-10">
+              <select name="payment_mastercard_status" id="input-master" class="form-control">
+                {% if payment_mastercard_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_mastercard_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_mastercard_sort_order" value="{{ payment_mastercard_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+       </div>
+
+         <div class="tab-pane" id="tab-nordea">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-nordea">{{ entry_nordea }}</label>
+            <div class="col-sm-10">
+              <select name="payment_nordea_status" id="input-nordea" class="form-control">
+                {% if payment_nordea_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_nordea_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_nordea_sort_order" value="{{ payment_nordea_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+       </div>
+
+         <div class="tab-pane" id="tab-omasp">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-oma">{{ entry_omasp }}</label>
+            <div class="col-sm-10">
+              <select name="payment_omasp_status" id="input-oma" class="form-control">
+                {% if payment_omasp_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_omasp_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_omasp_sort_order" value="{{ payment_omasp_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+       </div>
+
+        <div class="tab-pane" id="tab-osuuspankki">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-osuus">{{ entry_osuuspankki }}</label>
+            <div class="col-sm-10">
+              <select name="payment_osuuspankki_status" id="input-osuus" class="form-control">
+                {% if payment_osuuspankki_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_osuuspankki_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_osuuspankki_sort_order" value="{{ payment_osuuspankki_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+       </div>
+
+        <div class="tab-pane" id="tab-pivo">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-pivo">{{ entry_pivo }}</label>
+            <div class="col-sm-10">
+              <select name="payment_pivo_status" id="input-pivo" class="form-control">
+                {% if payment_pivo_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_pivo_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_pivo_sort_order" value="{{ payment_pivo_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+       </div>
+
+        <div class="tab-pane" id="tab-pop_pankki">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-pop">{{ entry_pop_pankki }}</label>
+            <div class="col-sm-10">
+              <select name="payment_pop_status" id="input-pop" class="form-control">
+                {% if payment_pop_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_pop_pankki_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_pop_sort_order" value="{{ payment_pop_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+       </div>
+
+         <div class="tab-pane" id="tab-spankki">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-aktia">{{ entry_spankki }}</label>
+            <div class="col-sm-10">
+              <select name="payment_spankki_status" id="input-aktia" class="form-control">
+                {% if payment_spankki_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_spankki_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_spankki_sort_order" value="{{ payment_spankki_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+       </div>
+
+            <div class="tab-pane" id="tab-saastopankki">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-saasto">{{ entry_saastopankki }}</label>
+            <div class="col-sm-10">
+              <select name="payment_saastopankki_status" id="input-saasto" class="form-control">
+                {% if payment_saastopankki_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_saastopankki_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_saastopankki_sort_order" value="{{ payment_saastopankki_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+       </div>
+
+            <div class="tab-pane" id="tab-visa">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-visa">{{ entry_visa }}</label>
+            <div class="col-sm-10">
+              <select name="payment_visa_status" id="input-visa" class="form-control">
+                {% if payment_visa_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_visa_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_visa_sort_order" value="{{ payment_visa_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+       </div>
+
+        <div class="tab-pane" id="tab-visa_electron">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-elec">{{ entry_visa_electron }}</label>
+            <div class="col-sm-10">
+              <select name="payment_visa_electron_status" id="input-elec" class="form-control">
+                {% if payment_visa_electron_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_visa_electron_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_visa_electron_sort_order" value="{{ payment_visa_electron_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+       </div>
+
+            <div class="tab-pane" id="tab-walley">
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-walley">{{ entry_walley }}</label>
+            <div class="col-sm-10">
+              <select name="payment_collectorb2c_status" id="input-walley" class="form-control">
+                {% if payment_collectorb2c_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_walley_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_collectorb2c_sort_order" value="{{ payment_collectorb2c_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+       </div>
+
+            <div class="tab-pane" id="tab-walley_yrityslasku">
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-yritys">{{ entry_walley_yrityslasku }}</label>
+            <div class="col-sm-10">
+              <select name="payment_collectorb2b_status" id="input-yritys" class="form-control">
+                {% if payment_collectorb2b_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+               {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_walley_yrityslasku_sort_order }}</label>
+      <div class="col-sm-10">
+           <input type="text" name="payment_collectorb2b_sort_order" value="{{ payment_collectorb2b_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+       </div>
+       </div>
+
+
+   </div>
+
+
+    </form>
+
+     </div>
+   </div>
+  </div>
+ </div>
+</div>
+{{ footer }}
