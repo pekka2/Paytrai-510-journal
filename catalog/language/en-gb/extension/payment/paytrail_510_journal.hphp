@@ -1,0 +1,34 @@
+<?php
+// Text
+$_['text_nordea']            = 'Nordea';
+$_['text_osuuspankki']       = 'Osuuspankki';
+$_['text_pivo']              = 'Pivo';
+$_['text_saastopankki']      = 'Säästöpankki';
+$_['text_omasp']             = 'Oma SP';
+$_['text_aktia']             = 'Aktia';
+$_['text_spankki']           = 'S-Pankki';
+$_['text_pop_pankki']        = 'Pop Pankki';
+$_['text_handelsbanken']     = 'Handelsbanken';
+$_['text_danskebank']       = 'Danskebank';
+$_['text_alandsbanken']      = 'Ålansbanken';
+$_['text_visa']              = 'Visa';
+$_['text_visa_electron']     = 'Visa Electron';
+$_['text_mastercard']        = 'Mastercard';
+$_['text_walley']            = 'Walley';
+$_['text_walley_yrityslasku'] = 'Walley Yrityslasku';
+$_['text_paid_success']     = 'Payment has been processed successfully! Payer’s bank: ';
+$_['text_paid_cancel']      = 'Payment process has been cancelled';
+$_['text_information']      = 'Information is processed .... ';
+$_['text_success']          = 'The payment method has been selected successfully!';
+
+// Button
+$_['button_back']           = 'Cancel';
+$_['button_pay']            = 'GO PAY';
+
+// Help
+$_['help_banks']            = 'You can pay directly through your web bank';
+$_['help_credit']           = 'You can pay with the debit or credit card of your choice';
+
+// Error
+$_['error_order_totals']     = '<b> ERROR! </b> The total cost of products and other costs at checkout calculated by the online store is less than the actual total price of the purchase and delivery and other costs!';
+?>
