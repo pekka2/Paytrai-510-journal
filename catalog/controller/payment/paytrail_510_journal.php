@@ -144,7 +144,7 @@ class ControllerPaymentPaytrail510Journal extends Controller {
                  $item[] = array(
                                       'unitPrice' => (int)round($order_info['total'] * 100,0),
                                       'units' => (int)1,
-                                      'vatPercentage' => (int)24,
+                                      'vatPercentage' => "25.5",
                                       'productCode' => '#'. $this->session->data['order_id'],
                                       'deliveryDate' => date('Y-m-d')
                  );
